@@ -9,7 +9,7 @@
 .idea
 .idea/vcs.xml
 # .tfvars files
-*.tfvars
+
 ### Python template
 # Byte-compiled / optimized / DLL files
 __pycache__/
