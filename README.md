@@ -1,4 +1,4 @@
-#### ECS service cretion script
+#### ECS service creation script
 ##### This script:
   - creates a repository in AWS ECR,
   - Using the packer, build the docker image, pushes it to the repository.
