@@ -1,0 +1,46 @@
+{
+   "variables": {
+     "docker_tag": "{{env `DOCKER_TAG`}}",
+     "docker_repo": "{{env `DOCKER_REPO`}}",
+     "login_srv": "{{env `LOGIN_SRV`}}",
+     "aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
+     "aws_secret_key": "{{env `AWS_SECRET_ACCESS_KEY`}}"
+   },
+   "builders": [{
+     "type": "docker",
+     "image": "ubuntu:16.04",
+     "commit": true,
+     "changes": [
+       "EXPOSE 80",
+       "LABEL version=1.0",
+       "ONBUILD RUN date",
+       "CMD [\"nginx\", \"-g\", \"daemon off;\"]"
+      ]
+  }],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+        "apt-get update -y",
+        "apt-get install -y nginx",
+        "apt-get clean",
+        "chown -R www-data:www-data /var/lib/nginx"
+      ]
+    }],
+  "post-processors": [
+    [
+      {
+        "type": "docker-tag",
+        "repository": "{{ user `docker_repo` }}",
+        "tag": "{{ user `docker_tag` }}"
+      },
+      {
+        "type": "docker-push",
+        "ecr_login": true,
+        "aws_access_key": "{{ user `aws_access_key` }}",
+        "aws_secret_key": "{{ user `aws_secret_key` }}",
+        "login_server": "{{ user `login_srv` }}"
+      }
+    ]
+  ]
+}
