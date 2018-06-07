@@ -1,7 +1,11 @@
 #### ECS service creation script
 ##### This script:
+  - creates a public VPC
+  - creates an ECS cluster
+  - creates autoscaling group and launch configuration for a cluster instances
+  - creates roles and security groups
   - creates a repository in AWS ECR,
-  - Using the packer, build the docker image, pushes it to the repository.
+  - builds the docker image, pushes it to the repository, using the packer
   - creates an AWS ECS service on a given cluster
   - creates AWS ELB for this service
   - checks the availability of the service
