@@ -11,25 +11,23 @@
   - terraform
   - awscli
 ##### How-to:
-1. Deploy ECS cluster
-
-2. Export credentials:
+1. Export credentials:
 ```bash
 export AWS_ACCESS_KEY_ID="..."
 export AWS_SECRET_ACCESS_KEY="..."
 ``` 
-3. Change variables and backend files or create your own:
+2. Change variables and backend files or create your own:
   - ./backends/backend-dev.json
   - ./vars/dev.tfvars
-4. Change backend s3 bucket in:
+3. Change backend s3 bucket in:
   - main.tf
-5. run (using existing dev config example):
+4. run (using existing dev config example):
 ```bash
 make init-dev
 make plan-dev
 make apply-dev
 ```
-6. Destroy all things, you created:
+5. Destroy all things, you created:
 ```bash
 make destroy-dev
 ```

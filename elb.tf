@@ -1,11 +1,12 @@
 resource "aws_elb" "nginx_elb" {
   name = "${var.environment}-${var.name}-${var.container_name}"
-  availability_zones = [ "${data.aws_availability_zones.available.names[0]}","${data.aws_availability_zones.available.names[1]}","${data.aws_availability_zones.available.names[2]}"]
+  subnets = ["${aws_subnet.public.*.id}"]
+  security_groups = ["${aws_security_group.elb_sg.id}"]
 
   listener {
-    instance_port     = 80
+    instance_port     = "${var.instance_port}"
     instance_protocol = "http"
-    lb_port           = 80
+    lb_port           = "${var.elb_port}"
     lb_protocol       = "http"
   }
 
@@ -13,7 +14,7 @@ resource "aws_elb" "nginx_elb" {
     healthy_threshold   = 2
     unhealthy_threshold = 2
     timeout             = 3
-    target              = "HTTP:80/"
+    target              = "HTTP:${var.instance_port}/"
     interval            = 30
   }
 
@@ -26,16 +27,11 @@ resource "aws_elb" "nginx_elb" {
   tags {
     Environment = "${var.environment}"
     role = "${var.container_name}"
+    Environment = "${var.environment}"
   }
 
 }
 
 
 
-data "aws_subnet_ids" "public" {
-  vpc_id = "${var.vpc_id}"
-}
 
-data "aws_availability_zones" "available" {
-
-}

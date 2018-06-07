@@ -21,14 +21,12 @@ resource "random_id" "random" {
   byte_length = 10
 }
 
-data "aws_caller_identity" "current" {
 
-}
 
 resource "null_resource" "curl" {
 
   provisioner "local-exec" {
-    command = "bash -c 'while [[ \"$(curl -s -o /dev/null -w ''%{http_code}'' ${aws_elb.nginx_elb.dns_name}:80)\" != \"200\" ]]; do sleep 5; done' }"
+    command = "bash -c 'while [[ \"$(curl -s -o /dev/null -w ''%{http_code}'' ${aws_elb.nginx_elb.dns_name}:${var.elb_port})\" != \"200\" ]]; do sleep 5; done' }"
   }
   depends_on = ["aws_elb.nginx_elb", "aws_ecs_task_definition.nginx_task","aws_security_group.elb_sg","aws_ecr_repository_policy.nginx_repo", "aws_ecs_service.nginx_service", "aws_ecr_repository.nginx_repo"]
 }
