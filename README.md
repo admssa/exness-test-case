@@ -2,7 +2,7 @@
 ##### This script:
   - creates a public VPC
   - creates an ECS cluster
-  - creates autoscaling group and launch configuration for a cluster instances
+  - creates autoscaling group and launch configuration for cluster instances
   - creates roles and security groups
   - creates a repository in AWS ECR,
   - builds the docker image, pushes it to the repository, using the packer
